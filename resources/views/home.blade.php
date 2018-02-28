@@ -89,15 +89,19 @@
                 <h3>' + placemark.name +'</h3>\
                 <!--<div data-poly="'+placemark.name+'" class="btn btn-primary"> Add to Selection</div>-->\
               </div>';
-            polygon.id = Window.count;
+            polygon.i = Window.count;
+            polygon.id = data;
 
               google.maps.event.addListener(polygon,'click',function() {
-                if(polygon.fillColor != "#00FF00"){
+                if(polygon.fillColor != "#00FF00"){//if not selected
                   polygon.setOptions({fillColor:"#00FF00",fillOpacity:0.7});
+                  addToTable(polygon);
                 }else{
                   polygon.setOptions({fillColor:"#0000ff",fillOpacity:0.48});
-                  polygon.infoWindow.close()
+                  polygon.infoWindow.close();
+                  removeFromTable(polygon.i);
                 }
+                toggleExport();
               })
     }
     Window.count++;
@@ -133,6 +137,32 @@
             'strokeOpacity': Math.max(0, polygon.strokeOpacity-stroke)
         });
     }, 50);
+  }
+
+  function addToTable(polygon){
+    let newRow ="<tr data-poly='"+polygon.i+"' data-id='"+polygon.id+"'>\
+      <td>"+polygon.title.split('(')[0]+"</td>\
+      <td>"+polygon.id+"</td>\
+      <td>\
+        <a onclick='removeFromSelection("+polygon.i+")'><i style='color:#FFF;cursor:pointer' class='fa fa-trash'></i></a>\
+      </td>\
+    </tr>\
+    ";
+    $('tbody[data-selections]').append(newRow);
+  }
+
+  function removeFromSelection(i){
+    google.maps.event.trigger(geoXML3.instances[0].docs[0].placemarks[i].polygon,'click');
+  }
+  function removeFromTable(i){
+    $('tr[data-poly="'+i+'"]').remove();
+  }
+  function toggleExport(){
+    if( $('tbody[data-selections]').children().length > 0 ){
+      $('.export-btn').show();
+    }else{
+      $('.export-btn').hide();
+    }
   }
 
 </script>

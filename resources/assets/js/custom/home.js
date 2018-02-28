@@ -3,6 +3,7 @@ $(function(){if(Window.Page === 'home'){
   var current_kml = $('.kml-picker').val();
 
   if( kml.length === 0 ){
+    $('.selection-container').hide();
     $('.slideout-menu-toggle').click();
   }
 

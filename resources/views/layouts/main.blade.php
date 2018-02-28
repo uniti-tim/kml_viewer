@@ -39,6 +39,20 @@ $files =[];
           </select>
         </div>
 
+        <div class="col-xs-12 selection-container">
+          <h2>Selection</h2>
+          <table class='table'>
+            <thead>
+              <th>Name</th>
+              <th>Gis ID</th>
+              <th></th>
+            </thead>
+            <tbody data-selections>
+            </tbody>
+          </table>
+          <div style='display:none' class="export-btn btn btn-default">Export</div>
+        </div>
+
       </nav>
 
       <main id="panel">
