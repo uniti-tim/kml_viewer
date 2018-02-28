@@ -12,3 +12,5 @@
 */
 
 Route::get('/',"PagesController@home");
+
+Route::post('upload/kml',"KMLManager@upload");

@@ -1,13 +1,3 @@
-<?php
-$storage = Storage::allFiles('public');
-$files =[];
-  foreach( $storage as $file){
-    if( strpos( strtolower(basename($file)),'.kml') ){
-      $files[] = basename($file);
-    }
-  }
- ?>
-
 <!doctype html>
 <html lang="{{ app()->getLocale() }}">
     <head>
@@ -29,30 +19,7 @@ $files =[];
     <body>
 
       <nav id="menu">
-        <div class="col-xs-12">
-          <h2>KML Files</h2>
-          <select class="kml-picker selectpicker" data-live-search="true" data-with='300px'>
-            <option value="" selected>Select a KML File</option>
-            @foreach($files as $file)
-            <option value="{{$file}}" {{ (request()->kml === $file)? 'selected':null }}>{{$file}}</option>
-            @endforeach
-          </select>
-        </div>
-
-        <div class="col-xs-12 selection-container">
-          <h2>Selection</h2>
-          <div style='display:none' class="export-btn btn btn-default">Export</div>
-          <table class='table'>
-            <thead>
-              <th>Name</th>
-              <th>Gis ID</th>
-              <th></th>
-            </thead>
-            <tbody data-selections>
-            </tbody>
-          </table>
-        </div>
-
+        @yield('menu')
       </nav>
 
       <main id="panel">
@@ -68,6 +35,46 @@ $files =[];
         </header>
               @yield('content')
       </main>
+
+      <!-- Upload KML Modal -->
+      <div class="modal fade" id="uploadKML" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title text-center">Upload New KML</h4>
+            </div>
+            <div class="modal-body" style="height:150px">
+              <p class="text-center">Click below to upload a new file. Files with the same name will be overwritten!</p>
+              <div class="col-xs-12 text-center">
+                {!!Form::open(['url'=>'upload/kml','enctype' => 'multipart/form-data'])!!}
+                  <label class='btn btn-default' for="upload-kml">Browse for KML</label>
+                  <input type="file" name="uploadKML" id="upload-kml"  onchange="javascript:showFilename()" />
+                  <div id="fileList" style="list-style:none;"></div>
+                  <br><br>
+
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              {{Form::submit('Upload',['class'=>'btn btn-success'])}}
+            </div>
+          {!!Form::close()!!}
+          </div>
+        </div>
+      </div>
+
+      <script type="text/javascript">
+      function showFilename(){
+        var input = document.getElementById('upload-kml');
+        var output = document.getElementById('fileList');
+
+        output.innerHTML = '<ul>';
+        for (var i = 0; i < input.files.length; ++i) {
+          output.innerHTML += '<li>' + input.files.item(i).name + '</li>';
+        }
+        output.innerHTML += '</ul>';
+      }
+      </script>
 
 
     </body>

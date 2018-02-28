@@ -174,3 +174,42 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCptxZlP6YYAIpqCTGvr6HjxD7
 </script>
 <script async defer src="js/ProjectedOverlay.js"></script>
 @endsection
+
+
+@section('menu')
+<?php
+$storage = Storage::allFiles('public');
+$files =[];
+  foreach( $storage as $file){
+    if( strpos( strtolower(basename($file)),'.kml') ){
+      $files[] = basename($file);
+    }
+  }
+ ?>
+
+<div class="col-xs-12">
+  <h2>KML Files <a data-toggle="modal" data-target="#uploadKML"><i style='color:#FFF' class='fa-fw fa fa-upload'></i></a>
+  </h2>
+  <select class="kml-picker selectpicker" data-live-search="true" data-with='300px'>
+    <option value="" selected>Select a KML File</option>
+    @foreach($files as $file)
+    <option value="{{$file}}" {{ (request()->kml === $file)? 'selected':null }}>{{$file}}</option>
+    @endforeach
+  </select>
+
+</div>
+
+<div class="col-xs-12 selection-container">
+  <h2>Selection</h2>
+  <div style='display:none' class="export-btn btn btn-default">Export</div>
+  <table class='table'>
+    <thead>
+      <th>Name</th>
+      <th>Gis ID</th>
+      <th></th>
+    </thead>
+    <tbody data-selections>
+    </tbody>
+  </table>
+</div>
+@endsection

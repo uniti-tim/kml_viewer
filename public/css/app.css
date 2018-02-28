@@ -11244,6 +11244,17 @@ body {
   top: 29px;
 }
 
+/*Menu Options */
+label {
+  cursor: pointer;
+}
+
+#upload-kml {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+
 .controls {
   margin-top: 10px;
   border: 1px solid transparent;

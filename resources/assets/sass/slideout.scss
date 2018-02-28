@@ -154,3 +154,14 @@ body {
   left: calc(50% - 5px);
   top: 29px;
 }
+
+/*Menu Options */
+label {
+   cursor: pointer;
+}
+
+#upload-kml {
+   opacity: 0;
+   position: absolute;
+   z-index: -1;
+}
