@@ -1,9 +1,9 @@
 @extends('layouts.main')
 
 @section('content')
+<input id="pac-input" class="controls" type="text" placeholder="Search City, Address, or Place">
 <div id='map' style="width: 100%;height: 100vh;"></div>
 <script type="text/javascript">
-  Window.count = 0;
   function initMap(loc) {
         var options = {
           zoom: 10,
@@ -12,19 +12,16 @@
         }
         map = new google.maps.Map( document.getElementById('map'), options);
 
+        var input = document.getElementById('pac-input');
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+
         var drawingManager = new google.maps.drawing.DrawingManager({
-          drawingMode: google.maps.drawing.OverlayType.MARKER,
+          drawingMode: google.maps.drawing.OverlayType.NONE,
           drawingControl: true,
           drawingControlOptions: {
             position: google.maps.ControlPosition.TOP_CENTER,
-            drawingModes: ['circle', 'polygon', 'rectangle']
-          },
-          circleOptions: {
-            fillColor: '#ffff00',
-            fillOpacity: .25,
-            strokeWeight: 1.5,
-            clickable: false,
-            zIndex: 1
+            drawingModes: ['polygon']
           },
           polygonOptions:{
             fillColor: '#ffff00',
@@ -33,13 +30,6 @@
             clickable: false,
             zIndex: 1
           },
-          rectangleOptions:{
-            fillColor: '#ffff00',
-            fillOpacity: .25,
-            strokeWeight: 1.5,
-            clickable: false,
-            zIndex: 1
-          }
         });
 
         myParser = new geoXML3.parser({
@@ -56,12 +46,40 @@
         drawingManager.setMap(map);
 
         google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
-            console.log('Drawn');
-            //Find polygons in this field
+            selectPolygons(event.overlay)
+        });
+
+        map.addListener('bounds_changed', function() {
+          searchBox.setBounds(map.getBounds());
+        });
+
+
+        searchBox.addListener('places_changed', function() {
+          var places = searchBox.getPlaces();
+
+          if (places.length == 0) {
+            return;
+          }
+          // For each place, get the icon, name and location.
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+
+            if (place.geometry.viewport) {
+              // Only geocodes have viewport.
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+          });
+          map.fitBounds(bounds);
         });
 
   }
-
+  Window.count = 0;
   function makeInfoWindows(placemark,doc){
     var polygon = geoXML3.instances[geoXML3.instances.length-1].createPolygon(placemark, doc);
         if(polygon.infoWindow) {
@@ -71,7 +89,7 @@
                 <h3>' + placemark.name +'</h3>\
                 <!--<div data-poly="'+placemark.name+'" class="btn btn-primary"> Add to Selection</div>-->\
               </div>';
-              polygon.id=Window.count;
+            polygon.id = Window.count;
 
               google.maps.event.addListener(polygon,'click',function() {
                 if(polygon.fillColor != "#00FF00"){
@@ -80,22 +98,29 @@
                   polygon.setOptions({fillColor:"#0000ff",fillOpacity:0.48});
                   polygon.infoWindow.close()
                 }
-
               })
     }
     Window.count++;
     return polygon;
   }
-
-  function addToSelction(polygon){
-    debugger;
+  function selectPolygons(overlay){
+    geoXML3.instances[0].docs[0].placemarks.forEach(function(el){
+      let NE = el.polygon.bounds.getNorthEast();
+      let SW = el.polygon.bounds.getSouthWest();
+      if( google.maps.geometry.poly.containsLocation(NE,overlay) && google.maps.geometry.poly.containsLocation(SW,overlay) ){
+        try{
+          google.maps.event.trigger(el.polygon,'click');
+        }catch(e){}
+      }
+    })
   }
+
 </script>
 <script src="js/geoxml3.js"></script>
 <script src="js/geoxml3_gxParse_kmz.js"></script>
 <script src="js/ZipFile.complete.js"></script>
 <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCptxZlP6YYAIpqCTGvr6HjxD7UekNosk8&callback=initMap&libraries=drawing">
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCptxZlP6YYAIpqCTGvr6HjxD7UekNosk8&callback=initMap&libraries=drawing,places">
 </script>
 <script async defer src="js/ProjectedOverlay.js"></script>
 @endsection
