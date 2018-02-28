@@ -1,3 +1,13 @@
+<?php
+$storage = Storage::allFiles('public');
+$files =[];
+  foreach( $storage as $file){
+    if( strpos( strtolower(basename($file)),'.kml') ){
+      $files[] = basename($file);
+    }
+  }
+ ?>
+
 <!doctype html>
 <html lang="{{ app()->getLocale() }}">
     <head>
@@ -5,8 +15,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name='page' content="{{ $name }}">
+        <meta name='kml' content="{{ $kml }}">
 
-        <title>{{config('app.name')}}</title>
+        <title>{{config('app.name')}} :: {{$title}}</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="{{asset('css/app.css')}}">
@@ -17,9 +29,16 @@
     <body>
 
       <nav id="menu">
-        <header>
-          <h2>Menu</h2>
-        </header>
+        <div class="col-xs-12">
+          <h2>KML Files</h2>
+          <select class="kml-picker selectpicker" data-live-search="true" data-with='300px'>
+            <option value="" selected>Select a KML File</option>
+            @foreach($files as $file)
+            <option value="{{$file}}" {{ (request()->kml === $file)? 'selected':null }}>{{$file}}</option>
+            @endforeach
+          </select>
+        </div>
+
       </nav>
 
       <main id="panel">

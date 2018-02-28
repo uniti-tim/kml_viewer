@@ -26,7 +26,6 @@
           polygonOptions:{
             fillColor: '#ffff00',
             fillOpacity: .25,
-            strokeWeight: 1.5,
             clickable: false,
             zIndex: 1
           },
@@ -41,12 +40,15 @@
           },
           createPolygon: makeInfoWindows
         });
-        myParser.parse("{{asset('storage/City_Boundaries_Sample_Area.kml')}}");
+        myParser.parse("{{asset('storage/'.request()->kml)}}");
 
         drawingManager.setMap(map);
 
         google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
+          try{ //in case youre messing around with no parsed KML
             selectPolygons(event.overlay)
+          }catch(e){}
+            polygon_fadeout(event.overlay,2,function(){event.overlay.setMap(null)})
         });
 
         map.addListener('bounds_changed', function() {
@@ -60,7 +62,6 @@
           if (places.length == 0) {
             return;
           }
-          // For each place, get the icon, name and location.
           var bounds = new google.maps.LatLngBounds();
           places.forEach(function(place) {
             if (!place.geometry) {
@@ -69,7 +70,6 @@
             }
 
             if (place.geometry.viewport) {
-              // Only geocodes have viewport.
               bounds.union(place.geometry.viewport);
             } else {
               bounds.extend(place.geometry.location);
@@ -113,6 +113,26 @@
         }catch(e){}
       }
     })
+  }
+
+  function polygon_fadeout(polygon, seconds, callback){
+    var
+    fill = (polygon.fillOpacity*50)/(seconds*999),
+    stroke = (polygon.strokeOpacity*50)/(seconds*999),
+    fadeout = setInterval(function(){
+        if(polygon.fillOpacity <= 0.0){
+            clearInterval(fadeout);
+            polygon.setVisible(false);
+            if(typeof(callback) == 'function'){
+                callback()
+            }
+            return;
+        }
+        polygon.setOptions({
+            'fillOpacity': Math.max(0, polygon.fillOpacity-fill),
+            'strokeOpacity': Math.max(0, polygon.strokeOpacity-stroke)
+        });
+    }, 50);
   }
 
 </script>
