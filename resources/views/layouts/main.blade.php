@@ -41,6 +41,7 @@ $files =[];
 
         <div class="col-xs-12 selection-container">
           <h2>Selection</h2>
+          <div style='display:none' class="export-btn btn btn-default">Export</div>
           <table class='table'>
             <thead>
               <th>Name</th>
@@ -50,7 +51,6 @@ $files =[];
             <tbody data-selections>
             </tbody>
           </table>
-          <div style='display:none' class="export-btn btn btn-default">Export</div>
         </div>
 
       </nav>
