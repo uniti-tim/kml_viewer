@@ -172,7 +172,7 @@
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCptxZlP6YYAIpqCTGvr6HjxD7UekNosk8&callback=initMap&libraries=drawing,places">
 </script>
-<script async defer src="js/ProjectedOverlay.js"></script>
+<!-- <script async defer src="js/ProjectedOverlay.js"></script> -->
 @endsection
 
 
@@ -201,7 +201,9 @@ $files =[];
 
 <div class="col-xs-12 selection-container">
   <h2>Selection</h2>
-  <div style='display:none' class="export-btn btn btn-default">Export</div>
+  <a onclick='exportData()'>
+    <div style='display:none' class="export-btn btn btn-default">Export</div>
+  </a>
   <table class='table'>
     <thead>
       <th>Name</th>
@@ -212,4 +214,20 @@ $files =[];
     </tbody>
   </table>
 </div>
+
+<script type="text/javascript">
+  function exportData(){
+    console.log('%c Exporting Selection Data...', 'background: #222; color: #bada55');
+    let data = [];
+    $('tbody[data-selections]').children().get().forEach(function(el){
+      data.push([$(el).data('id'),$(el).children().get(0).innerHTML]);
+    })
+
+    var download = window.open(
+      "generator/excel?data="+JSON.stringify(data)+"&name="+$('.kml-picker').selectpicker('val'),
+      '_blank'
+    );
+
+  }
+</script>
 @endsection

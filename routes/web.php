@@ -14,3 +14,4 @@
 Route::get('/',"PagesController@home");
 
 Route::post('upload/kml',"KMLManager@upload");
+Route::get('generator/excel',"GeneratorController@excel");
