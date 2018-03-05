@@ -109,7 +109,7 @@
   }
   function selectPolygons(overlay){
     if(geoXML3.instances[0].docs[0] === undefined){return true}
-    
+
     geoXML3.instances[0].docs[0].placemarks.forEach(function(el){
       let NE = el.polygon.bounds.getNorthEast();
       let SW = el.polygon.bounds.getSouthWest();
@@ -168,9 +168,9 @@
   }
 
 </script>
-<script src="js/geoxml3.js"></script>
-<script src="js/geoxml3_gxParse_kmz.js"></script>
-<script src="js/ZipFile.complete.js"></script>
+<script src="{{asset('js/geoxml3.js')}}"></script>
+<script src="{{asset('js/geoxml3_gxParse_kmz.js')}}"></script>
+<script src="{{asset('js/ZipFile.complete.js')}}"></script>
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCptxZlP6YYAIpqCTGvr6HjxD7UekNosk8&callback=initMap&libraries=drawing,places">
 </script>
