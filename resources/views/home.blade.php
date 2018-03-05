@@ -45,9 +45,9 @@
         drawingManager.setMap(map);
 
         google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
-          try{ //in case youre messing around with no parsed KML
+          // try{ //in case youre messing around with no parsed KML
             selectPolygons(event.overlay)
-          }catch(e){}
+          // }catch(e){}
             polygon_fadeout(event.overlay,2,function(){event.overlay.setMap(null)})
         });
 
@@ -108,6 +108,8 @@
     return polygon;
   }
   function selectPolygons(overlay){
+    if(geoXML3.instances[0].docs[0] === undefined){return true}
+    
     geoXML3.instances[0].docs[0].placemarks.forEach(function(el){
       let NE = el.polygon.bounds.getNorthEast();
       let SW = el.polygon.bounds.getSouthWest();
