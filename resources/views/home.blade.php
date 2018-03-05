@@ -40,8 +40,13 @@
           },
           createPolygon: makeInfoWindows
         });
-        myParser.parse("{{asset('storage/'.request()->kml)}}");
 
+        @if(\App::environment('local'))
+          myParser.parse("{{asset('storage/'.request()->kml)}}");
+        @else
+          myParser.parse("{{Storage::url('kmls/'.request()->kml)}}");
+
+        @endif
         drawingManager.setMap(map);
 
         google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
@@ -180,7 +185,11 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCptxZlP6YYAIpqCTGvr6HjxD7
 
 @section('menu')
 <?php
-$storage = Storage::allFiles('public');
+if(\App::environment('local')){
+  $storage = Storage::allFiles('public');
+}else{
+  $storage = Storage::allFiles('kmls');
+}
 $files =[];
   foreach( $storage as $file){
     if( strpos( strtolower(basename($file)),'.kml') ){

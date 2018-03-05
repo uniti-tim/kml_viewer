@@ -11,7 +11,11 @@ class KMLManager extends Controller
     public static function upload(Request $request){
       $file = $request->file('uploadKML');
       if( strpos(strtolower($file->getClientOriginalName()),'kml') ){
-        Storage::putFileAs('public',$file,$file->getClientOriginalName() );
+        if(\App::environment('local')){
+          Storage::putFileAs('public',$file,$file->getClientOriginalName() );
+        }else{
+          Storage::putFileAs('kmls',$file,$file->getClientOriginalName() );
+        }
         return Redirect::to("/?kml=".$file->getClientOriginalName());
       }else{
         dd($file);
