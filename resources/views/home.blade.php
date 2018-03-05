@@ -50,9 +50,7 @@
         drawingManager.setMap(map);
 
         google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
-          // try{ //in case youre messing around with no parsed KML
-            selectPolygons(event.overlay)
-          // }catch(e){}
+            selectPolygons(event.overlay);
             polygon_fadeout(event.overlay,2,function(){event.overlay.setMap(null)})
         });
 
