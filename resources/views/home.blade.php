@@ -183,10 +183,11 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCptxZlP6YYAIpqCTGvr6HjxD7
 
 @section('menu')
 <?php
-if(\App::environment('local')){
-  $storage = Storage::allFiles('public');
+if(App::environment('local')){
+  $storage = Storage::disk('local')->allFiles('public');
+
 }else{
-  $storage = Storage::allFiles('kmls');
+  $storage = Storage::disk('s3')->allFiles('kmls');
 }
 $files =[];
   foreach( $storage as $file){
