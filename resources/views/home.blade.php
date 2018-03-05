@@ -45,7 +45,6 @@
           myParser.parse("{{asset('storage/'.request()->kml)}}");
         @else
           myParser.parse("{{Storage::url('kmls/'.request()->kml)}}");
-
         @endif
         drawingManager.setMap(map);
 

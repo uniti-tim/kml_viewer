@@ -12,9 +12,9 @@ class KMLManager extends Controller
       $file = $request->file('uploadKML');
       if( strpos(strtolower($file->getClientOriginalName()),'kml') ){
         if(\App::environment('local')){
-          Storage::putFileAs('public',$file,$file->getClientOriginalName() );
+          Storage::disk('local')->putFileAs('public',$file,$file->getClientOriginalName() );
         }else{
-          Storage::putFileAs('kmls',$file,$file->getClientOriginalName() );
+          Storage::disk('s3')->putFileAs('kmls',$file,$file->getClientOriginalName() );
         }
         return Redirect::to("/?kml=".$file->getClientOriginalName());
       }else{
