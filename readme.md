@@ -10,6 +10,8 @@ Upload a KML and view it
 
 Select zones by highlight or direct click. Edit the selection list by clicking the trash icon in the list or by clicking the zone again. Export the selection list as a PDF!
 
+**Zone Select**
 ![Zone Select](https://github.com/uniti-tim/kml_viewer/blob/gif-addition/gifs/zone.gif)
 
+**Deselect and Export**
 ![Click and Export](https://github.com/uniti-tim/kml_viewer/blob/gif-addition/gifs/clickexport.gif)
