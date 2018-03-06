@@ -41,10 +41,12 @@
           createPolygon: makeInfoWindows
         });
 
-        @if(\App::environment('local'))
-          myParser.parse("{{asset('storage/'.request()->kml)}}");
-        @else
-          myParser.parse("{{Storage::url('kmls/'.request()->kml)}}");
+        @if( request()->kml != null )
+          @if(\App::environment('local'))
+            myParser.parse("{{asset('storage/'.request()->kml)}}");
+          @else
+            myParser.parse("{{Storage::url('kmls/'.request()->kml)}}");
+          @endif
         @endif
         drawingManager.setMap(map);
 
