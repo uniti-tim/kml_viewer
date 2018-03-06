@@ -174,7 +174,7 @@
 <script src="{{asset('js/geoxml3_gxParse_kmz.js')}}"></script>
 <script src="{{asset('js/ZipFile.complete.js')}}"></script>
 <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCptxZlP6YYAIpqCTGvr6HjxD7UekNosk8&callback=initMap&libraries=drawing,places">
+src="https://maps.googleapis.com/maps/api/js?key={{$_ENV['GMAPS_KEY']}}&callback=initMap&libraries=drawing,places">
 </script>
 <!-- <script async defer src="js/ProjectedOverlay.js"></script> -->
 @endsection
