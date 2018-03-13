@@ -38,6 +38,7 @@
           markerOptions:{
             visible:false
           },
+          processStyles: false,
           createPolygon: makeInfoWindows
         });
 
@@ -87,14 +88,17 @@
   function makeInfoWindows(placemark,doc){
     var polygon = geoXML3.instances[geoXML3.instances.length-1].createPolygon(placemark, doc);
         if(polygon.infoWindow) {
-          data = (placemark.vars.val.address.length > 0)? placemark.vars.val.address:placemark.name
+
+          uid = $( $.parseHTML(placemark.description)[5] ).children().find('td:contains("UID")').eq(1).next().text()
+          data = (uid.length > 0)? uid:placemark.name
+
             polygon.infoWindowOptions.content =
             '<div class="geoxml3_infowindow">\
                 <h3>' + placemark.name +'</h3>\
                 <!--<div data-poly="'+placemark.name+'" class="btn btn-primary"> Add to Selection</div>-->\
               </div>';
             polygon.i = Window.count;
-            polygon.id = data;
+            polygon.id = uid;
 
               google.maps.event.addListener(polygon,'click',function() {
                 if(polygon.fillColor != "#00FF00"){//if not selected
@@ -186,13 +190,12 @@ src="https://maps.googleapis.com/maps/api/js?key={{$_ENV['GMAPS_KEY']}}&callback
 <?php
 if(App::environment('local')){
   $storage = Storage::disk('local')->allFiles('public');
-
 }else{
   $storage = Storage::disk('s3')->allFiles('kmls');
 }
 $files =[];
   foreach( $storage as $file){
-    if( strpos( strtolower(basename($file)),'.kml') ){
+    if( strpos( strtolower(basename($file)),'.kml') || strpos( strtolower(basename($file)),'.kmz') ){
       $files[] = basename($file);
     }
   }
