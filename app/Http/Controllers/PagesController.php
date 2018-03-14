@@ -13,4 +13,11 @@ class PagesController extends Controller
         'kml' => $request->kml
       ]);
     }
+
+    public function editor(Request $request){
+      return view('editor',[
+        'name' => 'editor',
+        'title' => 'Editor'
+      ]);
+    }
 }

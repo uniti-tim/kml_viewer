@@ -219,19 +219,20 @@ $files =[];
 
 <div class="col-xs-12 selection-container">
   <h2>Selection</h2>
-  <a>
-    <div style='display:none;margin-top: 5px;' class="export-btn btn btn-default">Modify Selection Data</div>
-  </a>
-
-  <h6>or</h6>
-  <h6> Export Selection </h6>
-    <select class="selectpicker export-format">
-      <option data-icon="fa fa-file-excel-o" value="table">Selection Table</option>
-      <option data-icon="fa fa-file-excel-o" value="tabledata">Selection + Data</option>
-    </select>
-    <a onclick="exportData()">
-      <div style='display:none;margin-top: 5px;' class="export-btn btn btn-default">Export</div>
+  <div style='display:none;' class="export-btn">
+    <a onclick="goToEditData()">
+      <div style='margin-top: 5px;' class="export-btn btn btn-default">Modify Selection Data</div>
     </a>
+    <h6>or</h6>
+    <h6> Export Selection </h6>
+      <select class="selectpicker export-format">
+        <option data-icon="fa fa-file-excel-o" value="table">Selection Table</option>
+        <option data-icon="fa fa-file-excel-o" value="tabledata">Selection + Data</option>
+      </select>
+      <a onclick="exportData()">
+        <div style='margin-top: 5px;' class="btn btn-default">Export</div>
+      </a>
+  </div>
   <table class='table'>
     <thead>
       <th>Name</th>
@@ -257,6 +258,19 @@ $files =[];
       '_blank'
     );
 
+  }
+
+  function goToEditData(){
+    let data = [];
+    $('tbody[data-selections]').children().get().forEach(function(el){
+      //pushes an array into an array containing the UID and HR Name
+      data.push([$(el).data('id'),$(el).children().get(0).innerHTML]);
+    })
+
+    window.open(
+      "editor?data="+JSON.stringify(data),
+      '_blank'
+    );
   }
 </script>
 @endsection
