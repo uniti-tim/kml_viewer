@@ -4,6 +4,7 @@
 <input id="pac-input" class="controls" type="text" placeholder="Search City, Address, or Place">
 <div id='map' style="width: 100%;height: 100vh;"></div>
 <script type="text/javascript">
+Window.loaded = 0;
   function initMap(loc) {
         var options = {
           zoom: 10,
@@ -42,13 +43,16 @@
           createPolygon: makeInfoWindows
         });
 
-        @if( request()->kml != null )
-          @if(\App::environment('local'))
-            myParser.parse("{{asset('storage/'.request()->kml)}}");
-          @else
-            myParser.parse("{{Storage::url('kmls/'.request()->kml)}}");
+        if( Window.loaded ){
+          @if( request()->kml != null )
+            @if(\App::environment('local'))
+              myParser.parse("{{asset('storage/'.request()->kml)}}");
+            @else
+              myParser.parse("{{Storage::url('kmls/'.request()->kml)}}");
+            @endif
           @endif
-        @endif
+        }
+        Window.loaded++
         drawingManager.setMap(map);
 
         google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
@@ -179,7 +183,7 @@
 <script src="{{asset('js/geoxml3.js')}}"></script>
 <script src="{{asset('js/geoxml3_gxParse_kmz.js')}}"></script>
 <script src="{{asset('js/ZipFile.complete.js')}}"></script>
-<script async defer
+<script async
 src="https://maps.googleapis.com/maps/api/js?key={{$_ENV['GMAPS_KEY']}}&callback=initMap&libraries=drawing,places">
 </script>
 <!-- <script async defer src="js/ProjectedOverlay.js"></script> -->
@@ -215,9 +219,19 @@ $files =[];
 
 <div class="col-xs-12 selection-container">
   <h2>Selection</h2>
-  <a onclick='exportData()'>
-    <div style='display:none' class="export-btn btn btn-default">Export</div>
+  <a>
+    <div style='display:none;margin-top: 5px;' class="export-btn btn btn-default">Modify Selection Data</div>
   </a>
+
+  <h6>or</h6>
+  <h6> Export Selection </h6>
+    <select class="selectpicker export-format">
+      <option data-icon="fa fa-file-excel-o" value="table">Selection Table</option>
+      <option data-icon="fa fa-file-excel-o" value="tabledata">Selection + Data</option>
+    </select>
+    <a onclick="exportData()">
+      <div style='display:none;margin-top: 5px;' class="export-btn btn btn-default">Export</div>
+    </a>
   <table class='table'>
     <thead>
       <th>Name</th>
@@ -234,11 +248,12 @@ $files =[];
     console.log('%c Exporting Selection Data...', 'background: #222; color: #bada55');
     let data = [];
     $('tbody[data-selections]').children().get().forEach(function(el){
+      //pushes an array into an array containing the UID and HR Name
       data.push([$(el).data('id'),$(el).children().get(0).innerHTML]);
     })
 
     var download = window.open(
-      "generator/excel?data="+JSON.stringify(data)+"&name="+$('.kml-picker').selectpicker('val'),
+      "generator/excel?data="+JSON.stringify(data)+"&name="+$('.kml-picker').selectpicker('val')+"&format="+$('.export-format').selectpicker('val'),
       '_blank'
     );
 
