@@ -4,7 +4,6 @@
 <input id="pac-input" class="controls" type="text" placeholder="Search City, Address, or Place">
 <div id='map' style="width: 100%;height: 100vh;"></div>
 <script type="text/javascript">
-Window.loaded = 0;
   function initMap(loc) {
         var options = {
           zoom: 10,
@@ -43,16 +42,17 @@ Window.loaded = 0;
           createPolygon: makeInfoWindows
         });
 
-        if( Window.loaded ){
+        console.log('IN SCRIPT')
           @if( request()->kml != null )
-            @if(\App::environment('local'))
+          console.log('KML NOT NULL')
+            @if(App::environment('local'))
+            console.log('OK')
               myParser.parse("{{asset('storage/'.request()->kml)}}");
             @else
               myParser.parse("{{Storage::url('kmls/'.request()->kml)}}");
             @endif
           @endif
-        }
-        Window.loaded++
+
         drawingManager.setMap(map);
 
         google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
@@ -268,7 +268,7 @@ $files =[];
     })
 
     window.open(
-      "editor?data="+JSON.stringify(data),
+      "editor?data="+JSON.stringify(data)+"&model={{$model}}",
       '_blank'
     );
   }

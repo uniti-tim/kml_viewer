@@ -11139,6 +11139,7 @@ Window.Page = $("meta[name='page']").attr('content');
 __webpack_require__(39);
 __webpack_require__(40);
 __webpack_require__(41);
+__webpack_require__(47);
 
 /***/ }),
 /* 10 */
@@ -34299,6 +34300,55 @@ $(function () {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */
+/***/ (function(module, exports) {
+
+$(function () {
+  if (Window.Page === 'editor') {
+
+    //prevent being refresh on accident when selection list is not empty
+    window.onbeforeunload = function () {
+      return "Your selection list will not be saved if you refresh.";
+    };
+
+    $('[data-submit-edits]').click(function (e) {
+      submitEdits(e, $(e.target).data('submit-edits'), $(e.target).data('uid'));
+    });
+  }
+});
+
+function submitEdits(e, model, uid) {
+  var $inputs = $(e.target).parents().closest('.modal-content').children().closest('.modal-body').children().find('input');
+  var data = {};
+
+  $inputs.each(function (i, el) {
+    var name = $(el).data('name'),
+        value = $(el).val();
+    data[name] = value;
+  });
+
+  $.ajax({
+    url: "editor/submit",
+    headers: {
+      'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    },
+    type: "POST",
+    data: { inputs: data, uid: uid },
+    success: function success(response) {
+      pRes = JSON.parse(response);
+      if (response) {
+        window.onbeforeunload = null;
+        location.reload();
+      }
+    }
+  });
+}
 
 /***/ })
 /******/ ]);
