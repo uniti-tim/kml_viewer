@@ -20,6 +20,11 @@
   $data = json_decode(request()->data);
  ?>
 <body class="hm-gradient">
+  <style>
+    .modal-backdrop{
+      display: none;
+    }
+  </style>
   <main>
       <!--MDB Tables-->
       <div class="container mt-4">
@@ -60,11 +65,39 @@
                                 <th class='text-center'>{{$record[0]}}</th>
                                 <td class='text-center'>{{$record[1]}}</td>
                                 <td class='text-center'>
-                                  <div class="btn btn-default">View Attributes</div> <!-- Make Modal to show attributes -->
+                                  <div class="btn btn-default" data-toggle="modal" data-target="#{{$record[0]}}Attributes">View Attributes</div> <!-- Make Modal to show attributes -->
                                 </td>
                                 <td class='text-center'>
                                   <div class="btn btn-primary">Edit Attributes</div><!-- Go -->
                                 </td>
+
+
+                                <!-- Modal -->
+                                <div class="modal fade" style="margin-top:5%" id="{{$record[0]}}Attributes" tabindex="-1" role="dialog" aria-hidden="true">
+                                  <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h3 class="modal-title text-center">Attributes For {{$record[1]}}</h3>
+                                      </div>
+                                      <div class="modal-body">
+                                        <?php $attr = json_decode(App\Zipcodes::where('uid',$record[0])->get()[0]->data); ?>
+                                        <ul style="list-style:none">
+                                          @foreach($attr as $key => $value)
+                                          <?php  $value = is_array($value)? implode(",",$value):(string)$value; ?>
+                                            <li>
+                                              <b>{{$key}}</b>: {{$value}}
+                                            </li>
+                                          @endforeach
+                                        </ul>
+
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
                             </tr>
                             @endforeach
                           @else
