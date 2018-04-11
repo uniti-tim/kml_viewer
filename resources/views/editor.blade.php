@@ -48,6 +48,11 @@
                           </div>
                       </div> -->
                       <!-- Grid column -->
+                      <div class="col-xs-4">
+                        <div style="margin:5px 10px 0px 10px" class="btn btn-default col-xs-12" data-toggle='modal' data-target='#bulkUpdateModal'>Bulk Update Selection </div>
+                        <!-- <div style="margin:5px 10px 0px 10px" class="btn btn-default col-xs-12">Add new fields to selection</div> -->
+                      </div>
+
                   </div>
                   <!-- Grid row -->
 
@@ -57,7 +62,7 @@
                               <th class='text-center'>GIS ID</th>
                               <th class='text-center'>Entity Name</th>
                               <th class='text-center'>Attribute Values</th>
-                              <th class='text-center'>Edit Attributes</th>
+                              <th class='text-center'>Edit</th>
                           </tr>
                       </thead>
                       <tbody>
@@ -70,7 +75,7 @@
                                   <div class="btn btn-default" data-toggle="modal" data-target="#{{$record[0]}}Attributes">View Attributes</div> <!-- Make Modal to show attributes -->
                                 </td>
                                 <td class='text-center'>
-                                  <div class="btn btn-primary" data-toggle="modal" data-target="#{{$record[0]}}Editor">Edit Attributes</div><!-- Go -->
+                                  <div class="btn btn-primary" data-toggle="modal" data-target="#{{$record[0]}}Editor">Edit Record</div><!-- Go -->
                                 </td>
 
 
@@ -156,9 +161,55 @@
                       <!--Table body-->
                   </table>
                   <!--Table-->
-
+                  {!! $data->appends(['data'=> request()->data,'model'=>class_basename($model) ])->render() !!}
               </div>
           </div>
+      </div>
+
+
+      <!-- Bulk Update Modal -->
+      <div class="modal fade" style="margin-top:5%" id="bulkUpdateModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title text-center">Bulk Update Fields for {{class_basename($model)}}</h3>
+            </div>
+            <div class="modal-body">
+              <p class=" alert alert-danger"><strong>NOTE:</strong> This will overwrite the attribute with your input in the field to ALL areas you selected. To make a field empty, just add a single space in the input field.</p>
+
+              <?php $mod_attr = $model::mod_attributes(); ?>
+              <ul style="list-style:none">
+                @foreach($mod_attr as $key => $value)
+                <div class="form-group row">
+                  <label class="col-sm-4 text-right" style="line-height: 32px;font-size: 15px;">{{$key}}</label>
+                  <div class="col-sm-6">
+                    <input
+                    data-name='{{$key}}'
+                    type="text"
+                    class="form-control"
+                    <?php switch ($value) {
+                           case 'float':
+                            $ex = "1.35";
+                            break;
+                           case 'string':
+                            $ex = "text here";
+                            break;
+                           case 'integer':
+                            $ex = "2";
+                            break;
+                    }?>
+                     placeholder="This should be a {{$value}} eg: {{$ex}}" />
+                  </div>
+                </div>
+                @endforeach
+              </ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
+              <button type="button" data-bulk-edit data-selection={{request()->data}} data-model={{class_basename($model)}} class="btn btn-success" data-dismiss="modal">Submit</button>
+            </div>
+          </div>
+        </div>
       </div>
 
   </main>

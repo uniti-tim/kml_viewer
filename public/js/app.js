@@ -11117,7 +11117,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(9);
-module.exports = __webpack_require__(42);
+module.exports = __webpack_require__(43);
 
 
 /***/ }),
@@ -11139,7 +11139,7 @@ Window.Page = $("meta[name='page']").attr('content');
 __webpack_require__(39);
 __webpack_require__(40);
 __webpack_require__(41);
-__webpack_require__(47);
+__webpack_require__(42);
 
 /***/ }),
 /* 10 */
@@ -34299,16 +34299,6 @@ $(function () {
 /* 42 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */,
-/* 47 */
-/***/ (function(module, exports) {
-
 $(function () {
   if (Window.Page === 'editor') {
 
@@ -34349,6 +34339,12 @@ function submitEdits(e, model, uid) {
     }
   });
 }
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
