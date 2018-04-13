@@ -42,15 +42,8 @@
           createPolygon: makeInfoWindows
         });
 
-        console.log('IN SCRIPT')
           @if( request()->kml != null )
-          console.log('KML NOT NULL')
-            @if(App::environment('local'))
-            console.log('OK')
               myParser.parse("{{asset('storage/'.request()->kml)}}");
-            @else
-              myParser.parse("{{Storage::url('kmls/'.request()->kml)}}");
-            @endif
           @endif
 
         drawingManager.setMap(map);
@@ -254,7 +247,7 @@ $files =[];
     })
 
     var download = window.open(
-      "generator/excel?data="+JSON.stringify(data)+"&name="+$('.kml-picker').selectpicker('val')+"&format="+$('.export-format').selectpicker('val'),
+      "generator/excel?data="+JSON.stringify(data)+"&name="+$('.kml-picker').selectpicker('val')+"&format="+$('.export-format').selectpicker('val')+"&model={{class_basename($model)}}",
       '_blank'
     );
 

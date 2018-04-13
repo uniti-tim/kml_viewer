@@ -6,6 +6,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use App\ZipCodes;
+use App\Wireline;
 
 class PagesController extends Controller
 {
@@ -42,8 +43,14 @@ class PagesController extends Controller
     private static function getModel($request){
       switch (request()->model) {
 
-        case 'ZipCode' || 'ZipCodes':
+        case 'ZipCodes':
           $_model = new ZipCodes;
+          $data = json_decode(request()->data);
+          $error = null;
+          break;
+
+        case 'Wireline':
+          $_model = new Wireline;
           $data = json_decode(request()->data);
           $error = null;
           break;
@@ -59,7 +66,9 @@ class PagesController extends Controller
 
     private static function determineModel($kml_name){
       if( strpos(strtolower($kml_name),"zip") !== false ){
-        return "ZipCode";
+        return "ZipCodes";
+      }else if(strpos(strtolower($kml_name),"ilec") !== false){
+        return "Wireline";
       }
     }
 }

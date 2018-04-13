@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
-use App\Zipcodes;
 use StreamedResponse;
 use Excel;
 
@@ -45,9 +44,10 @@ class GeneratorController extends Controller
 
 
     private static function makeExportTableWithData($request){
+      $model = app("App\\".$request->model);
       $id_data = json_decode($request->data);
       $name = explode('.',$request->name)[0];
-      $json_data = json_decode(Zipcodes::find(1)->data);
+      $json_data = json_decode($model::first()->data);
       $headers = ["GIS ID", "NAME"];
       foreach($json_data as $key => $val){
           $headers[] = $key;
@@ -58,7 +58,7 @@ class GeneratorController extends Controller
           $uids[] = $val[0]; //get just the UID from the input array
       }
 
-      $items = ZipCodes::whereIn('uid',$uids)->get();
+      $items = $model::whereIn('uid',$uids)->get();
       if( count($items) > 0 ){
         $data = [];
         foreach( $items as $item){

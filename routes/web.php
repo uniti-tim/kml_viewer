@@ -18,5 +18,4 @@ Route::get('generator/excel',"GeneratorController@excel");
 Route::get('editor',"PagesController@editor");
 
 Route::post('editor/submit',"EditorController@submitSingle");
-// Route::post('editor/bulk/submit',"EditorController@submitBulk");
-Route::get('editor/bulk/submit',"EditorController@submitBulk");
+Route::post('editor/bulk/submit',"EditorController@submitBulk");

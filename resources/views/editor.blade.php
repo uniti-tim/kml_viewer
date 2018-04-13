@@ -16,8 +16,6 @@
 @endsection
 
 @section('content')
-<?php
- ?>
 <body class="hm-gradient">
   <style>
     .modal-backdrop{
@@ -32,6 +30,12 @@
           <div class="alert alert-danger text-center" style="margin-top:2%" role="alert">
             <strong>Error!</strong> {{$error}} <br>
             <a href="#" onClick="window.close()">Close Editor </a>
+          </div>
+        @endif
+
+        @if( session()->has('success') )
+          <div class="alert alert-success text-center" style="margin-top:2%" role="alert">
+            <strong>Success!</strong> {{session('success')}} <br>
           </div>
         @endif
 
@@ -175,7 +179,7 @@
               <h3 class="modal-title text-center">Bulk Update Fields for {{class_basename($model)}}</h3>
             </div>
             <div class="modal-body">
-              <p class=" alert alert-danger"><strong>NOTE:</strong> This will overwrite the attribute with your input in the field to ALL areas you selected. To make a field empty, just add a single space in the input field.</p>
+              <p class=" alert alert-danger"><strong>NOTE:</strong> This will overwrite the attribute with your input in the field to ALL areas you selected. To make a field empty, just add a single space in the input field. If you dont want to edit field than leave it empty.</p>
 
               <?php $mod_attr = $model::mod_attributes(); ?>
               <ul style="list-style:none">
@@ -206,7 +210,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
-              <button type="button" data-bulk-edit data-selection={{request()->data}} data-model={{class_basename($model)}} class="btn btn-success" data-dismiss="modal">Submit</button>
+              <button type="button" data-bulk-edit='{{class_basename($model)}}' data-selection={{request()->data}} class="btn btn-success" data-dismiss="modal">Submit</button>
             </div>
           </div>
         </div>
