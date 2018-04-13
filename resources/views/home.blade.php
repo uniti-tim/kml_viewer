@@ -44,6 +44,7 @@
 
           @if( request()->kml != null )
               myParser.parse("{{asset('storage/'.request()->kml)}}");
+              Window.mapSet = true;
           @endif
 
         drawingManager.setMap(map);

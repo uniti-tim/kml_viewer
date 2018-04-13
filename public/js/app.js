@@ -11135,6 +11135,7 @@ __webpack_require__(10);
 window.Slideout = __webpack_require__(36);
 
 Window.Page = $("meta[name='page']").attr('content');
+Window.setMap = false;
 
 __webpack_require__(39);
 __webpack_require__(40);
@@ -34252,16 +34253,14 @@ $(function () {
 /***/ (function(module, exports) {
 
 
-$(function () {
-  if (Window.Page === 'home') {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        var loc = { lat: position.coords.latitude, lng: position.coords.longitude };
-        initMap(loc);
-      });
-    }
-  }
-});
+// $(function(){if(Window.Page === 'home'){
+//   if ("geolocation" in navigator && Window.setMap == false) {
+//     navigator.geolocation.getCurrentPosition(function(position) {
+//       let loc ={lat:position.coords.latitude,lng:position.coords.longitude}
+//       initMap(loc);
+//     });
+//   }
+// }})
 
 /***/ }),
 /* 41 */

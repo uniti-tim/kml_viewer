@@ -9,6 +9,7 @@ require('./bootstrap');
 window.Slideout = require('slideout');
 
 Window.Page = $("meta[name='page']").attr('content');
+Window.setMap = false;
 
 require('./custom/slideout');
 require('./custom/browserloc');
