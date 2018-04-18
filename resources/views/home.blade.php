@@ -42,10 +42,13 @@
           createPolygon: makeInfoWindows
         });
 
-          @if( request()->kml != null )
-              myParser.parse("{{asset('storage/'.request()->kml)}}");
-              Window.mapSet = true;
+        @if( request()->kml != null )
+          @if($_ENV["FILESYSTEM_DRIVER"] == 'local')
+            myParser.parse("{{asset('storage/'.request()->kml)}}");
+          @else
+            myParser.parse("{{Storage::url('kmls/'.request()->kml)}}");
           @endif
+        @endif
 
         drawingManager.setMap(map);
 
@@ -186,7 +189,7 @@ src="https://maps.googleapis.com/maps/api/js?key={{$_ENV['GMAPS_KEY']}}&callback
 
 @section('menu')
 <?php
-if(App::environment('local')){
+if($_ENV["FILESYSTEM_DRIVER"] == 'local'){
   $storage = Storage::disk('local')->allFiles('public');
 }else{
   $storage = Storage::disk('s3')->allFiles('kmls');
