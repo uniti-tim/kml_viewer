@@ -8,6 +8,7 @@ use Session;
 
 class Zipcodes extends Model
 {
+    protected $connection = 'pgsql_ct';
     protected $table = 'zipcodes';
     protected $fillable = ['data'];
 

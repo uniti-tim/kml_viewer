@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Wireline extends Model
 {
+  protected $connection = 'pgsql_ct';
   protected $table = 'wirelines';
   protected $fillable = ['data'];
 

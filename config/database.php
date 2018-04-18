@@ -54,13 +54,26 @@ return [
             'engine' => null,
         ],
 
-        'pgsql' => [
+        'pgsql_dpt' => [
             'driver' => 'pgsql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'host' => env('DB_HOST_DPT', '127.0.0.1'),
+            'port' => env('DB_PORT_DPT', '5432'),
+            'database' => env('DB_DATABASE_DPT', 'forge'),
+            'username' => env('DB_USERNAME_DPT', 'forge'),
+            'password' => env('DB_PASSWORD_DPT', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
+        'pgsql_ct' => [
+            'driver' => 'pgsql',
+            'host' => env('DB_HOST_CT', '127.0.0.1'),
+            'port' => env('DB_PORT_CT', '5432'),
+            'database' => env('DB_DATABASE_CT', 'forge'),
+            'username' => env('DB_USERNAME_CT', 'forge'),
+            'password' => env('DB_PASSWORD_CT', ''),
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',

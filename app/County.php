@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class County extends Model
 {
+  protected $connection = 'pgsql_ct';
   protected $table = 'counties';
   protected $fillable = ['data'];
 
