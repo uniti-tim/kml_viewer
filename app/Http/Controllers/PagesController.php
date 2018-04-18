@@ -7,6 +7,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use App\ZipCodes;
 use App\Wireline;
+use App\County;
 
 class PagesController extends Controller
 {
@@ -55,6 +56,12 @@ class PagesController extends Controller
           $error = null;
           break;
 
+        case 'County':
+          $_model = new County;
+          $data = json_decode(request()->data);
+          $error = null;
+          break;
+
         default:
           $_model = null;
           $data = null;
@@ -69,6 +76,8 @@ class PagesController extends Controller
         return "ZipCodes";
       }else if(strpos(strtolower($kml_name),"ilec") !== false){
         return "Wireline";
+      }else if(strpos(strtolower($kml_name),"counties") !== false){
+        return "County";
       }
     }
 }
