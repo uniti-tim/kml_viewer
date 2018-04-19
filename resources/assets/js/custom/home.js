@@ -1,4 +1,4 @@
-$(function(){if(Window.Page === 'home'){
+$(function(){if(Window.Page === 'dash'){
 
   //prevent being refresh on accident when selection list is not empty
   window.onbeforeunload = function() {

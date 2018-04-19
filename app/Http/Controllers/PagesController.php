@@ -11,11 +11,11 @@ use App\County;
 
 class PagesController extends Controller
 {
-    public function home(Request $request){
+    public function dashboard(Request $request){
 
-      return view('home',[
-        'name' => 'home',
-        'title' => 'Home',
+      return view('dash',[
+        'name' => 'dash',
+        'title' => 'Dashboard',
         'kml' => $request->kml,
         'model' => $this->determineModel($request->kml)
       ]);

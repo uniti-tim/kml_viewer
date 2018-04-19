@@ -34267,7 +34267,7 @@ $(function () {
 /***/ (function(module, exports) {
 
 $(function () {
-  if (Window.Page === 'home') {
+  if (Window.Page === 'dash') {
 
     //prevent being refresh on accident when selection list is not empty
     window.onbeforeunload = function () {

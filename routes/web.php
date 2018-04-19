@@ -10,12 +10,14 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
 
-Route::get('/',"PagesController@home");
+Route::get('/', 'PagesController@dashboard')->name('home')->middleware('auth');
+Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
 
-Route::post('upload/kml',"KMLManager@upload");
-Route::get('generator/excel',"GeneratorController@excel");
-Route::get('editor',"PagesController@editor");
+Route::post('upload/kml',"KMLManager@upload")->middleware('auth');
+Route::get('generator/excel',"GeneratorController@excel")->middleware('auth');
+Route::get('editor',"PagesController@editor")->middleware('auth');
 
-Route::post('editor/submit',"EditorController@submitSingle");
-Route::post('editor/bulk/submit',"EditorController@submitBulk");
+Route::post('editor/submit',"EditorController@submitSingle")->middleware('auth');
+Route::post('editor/bulk/submit',"EditorController@submitBulk")->middleware('auth');

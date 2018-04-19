@@ -1,4 +1,7 @@
 <?php
+$heroku_db_url = parse_url(env('DATABASE_URL_DPT', "postgres://admin:tdc@localhost:5432/DPT"));
+$heroku_db_ct_url = parse_url(env('DATABASE_URL_CT', "postgres://admin:tdc@localhost:5432/Test"));
+
 
 return [
 
@@ -13,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'pgsql_dpt'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,11 +59,10 @@ return [
 
         'pgsql_dpt' => [
             'driver' => 'pgsql',
-            'host' => env('DB_HOST_DPT', '127.0.0.1'),
-            'port' => env('DB_PORT_DPT', '5432'),
-            'database' => env('DB_DATABASE_DPT', 'forge'),
-            'username' => env('DB_USERNAME_DPT', 'forge'),
-            'password' => env('DB_PASSWORD_DPT', ''),
+            'host'     => $heroku_db_url['host'],
+            'database' => substr($heroku_db_url['path'], 1),
+            'username' => $heroku_db_url['user'],
+            'password' => $heroku_db_url['pass'],
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
@@ -69,11 +71,10 @@ return [
 
         'pgsql_ct' => [
             'driver' => 'pgsql',
-            'host' => env('DB_HOST_CT', '127.0.0.1'),
-            'port' => env('DB_PORT_CT', '5432'),
-            'database' => env('DB_DATABASE_CT', 'forge'),
-            'username' => env('DB_USERNAME_CT', 'forge'),
-            'password' => env('DB_PASSWORD_CT', ''),
+            'host'     => $heroku_db_ct_url['host'],
+            'database' => substr($heroku_db_ct_url['path'], 1),
+            'username' => $heroku_db_ct_url['user'],
+            'password' => $heroku_db_ct_url['pass'],
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
