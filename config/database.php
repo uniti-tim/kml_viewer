@@ -1,5 +1,5 @@
 <?php
-$heroku_db_url = parse_url(env('DATABASE_URL_DPT', "postgres://admin:tdc@localhost:5432/DPT"));
+$heroku_db_url = parse_url(env('DATABASE_URL', "postgres://admin:tdc@localhost:5432/DPT"));
 $heroku_db_ct_url = parse_url(env('DATABASE_URL_CT', "postgres://admin:tdc@localhost:5432/Test"));
 
 
