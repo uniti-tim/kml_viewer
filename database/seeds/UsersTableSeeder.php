@@ -13,10 +13,20 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         User::truncate();
+        //make admin
+        User::create([
+          'name' => 'DPT Admin',
+          'email' => 'dpt_admin@uniti.com',
+          'password' => bcrypt('adminunitifiber!!'),
+          'role' => 'admin'
+        ]);
+
+        //make user
         User::create([
           'name' => 'DPT User',
           'email' => 'dpt_tool@uniti.com',
-          'password' => bcrypt('unitifiber!!')
+          'password' => bcrypt('unitifiber!!'),
+          'role' => 'user'
         ]);
     }
 }

@@ -12,4 +12,10 @@ class User extends Authenticatable
     protected $fillable = ['name', 'email', 'password'];
     protected $hidden = ['password', 'remember_token'];
     protected $connection = 'pgsql_dpt';
+
+
+
+    public function isAdmin(){
+      return $this->role === 'admin';
+    }
 }

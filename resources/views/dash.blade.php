@@ -207,7 +207,11 @@ $files =[];
   </a>
 </div>
 <div class="col-xs-12">
-  <h2>KML Files <a data-toggle="modal" data-target="#uploadKML"><i style='color:#FFF' class='fa-fw fa fa-upload'></i></a>
+
+  <h2>KML Files
+    @if( Auth::user()->isAdmin() )
+    <a data-toggle="modal" data-target="#uploadKML"><i style='color:#FFF' class='fa-fw fa fa-upload'></i></a>
+    @endif
   </h2>
   <select class="kml-picker selectpicker" data-live-search="true" data-with='300px'>
     <option value="" selected>Select a KML File</option>
