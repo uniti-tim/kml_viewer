@@ -15,3 +15,8 @@ require('./custom/slideout');
 require('./custom/browserloc');
 require('./custom/home');
 require('./custom/editor');
+
+// Init tooltips from bootstrap
+$(function(){
+  $('[data-toggle="tooltip"]').tooltip();
+})

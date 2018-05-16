@@ -11142,6 +11142,11 @@ __webpack_require__(40);
 __webpack_require__(41);
 __webpack_require__(42);
 
+// Init tooltips from bootstrap
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});
+
 /***/ }),
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
