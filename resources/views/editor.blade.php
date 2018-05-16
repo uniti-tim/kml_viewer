@@ -43,7 +43,7 @@
               <div class="card-body">
                   <!-- Grid row -->
                   <div class="row">
-                    <h2 class="pt-3 pb-4 text-center font-bold font-up deep-purple-text">Edit Attributes for selected {{ !empty(class_basename($model)) ? class_basename($model):ucwords(request()->model) }}</h2>
+                    <h2 class="pt-3 pb-4 text-center font-bold font-up deep-purple-text">Editing {{ !empty(class_basename($model)) ? str_plural(class_basename($model)):str_plural(ucwords(request()->model)) }}</h2>
                       <!-- Grid column -->
                       <!-- <div class="col-md-12">
                           <div class="input-group md-form form-sm form-2 pl-0">
