@@ -18,4 +18,23 @@ class Zipcodes extends Model
       #Available Types: integer,float,string
       return ['CPF'=>"float"];
     }
+
+    public static function friendly_attribute($name, $type = 'name'){
+      #This will map out raw attribute names to a more friendly and readable
+      #text that is easier for user to understand. Also can map out helper text
+      #on the form input
+      $friendly_data = [
+        'CPF'=>[
+          'name' => 'CPF',
+          'helper_text' => "This value determines the Cost per foot to build in this Zipcode. Exclude $ sign."
+          ],
+      ];
+
+      if( array_key_exists($name,$friendly_data) ){
+        return $friendly_data[$name][$type];
+      }else{
+        return $name;
+      }
+    }
+
 }

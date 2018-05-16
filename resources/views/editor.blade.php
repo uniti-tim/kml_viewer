@@ -128,7 +128,19 @@
                                             if( !in_array($key,array_keys($mod_attr)) || is_array($value) ){continue;}
                                             ?>
                                             <div class="form-group row">
-                                              <label class="col-sm-4 text-right" style="line-height: 32px;font-size: 15px;">{{$key}}</label>
+
+                                              <label class="col-sm-4 text-right" style="line-height: 32px;font-size: 15px;">
+                                                {{ $model::friendly_attribute($key, 'name') }}
+
+                                                @if( !is_null( $model::friendly_attribute($key, 'helper_text') )  )
+                                                  <i class='fa-fw fa fa-info-circle'
+                                                  data-toggle="tooltip"
+                                                  data-html="true"
+                                                  title="{{ $model::friendly_attribute($key, 'helper_text') }}"
+                                                  ></i>
+                                                @endif
+
+                                              </label>
                                               <div class="col-sm-6">
                                                 <input
                                                 data-edit-attr
@@ -136,7 +148,7 @@
                                                 type="text"
                                                 class="form-control"
                                                 value={{$value}}
-                                                 placeholder="{{$key}} value" />
+                                                 placeholder="{{$model::friendly_attribute($key, 'name')}} value" />
                                               </div>
                                             </div>
                                           @endforeach
@@ -185,7 +197,18 @@
               <ul style="list-style:none">
                 @foreach($mod_attr as $key => $value)
                 <div class="form-group row">
-                  <label class="col-sm-4 text-right" style="line-height: 32px;font-size: 15px;">{{$key}}</label>
+                  <label class="col-sm-4 text-right" style="line-height: 32px;font-size: 15px;">
+                    {{ $model::friendly_attribute($key, 'name') }}
+
+                    @if( !is_null( $model::friendly_attribute($key, 'helper_text') )  )
+                      <i class='fa-fw fa fa-info-circle'
+                      data-toggle="tooltip"
+                      data-html="true"
+                      title="{{ $model::friendly_attribute($key, 'helper_text') }}"
+                      ></i>
+                    @endif
+                    
+                  </label>
                   <div class="col-sm-6">
                     <input
                     data-name='{{$key}}'
