@@ -155,7 +155,7 @@
       <td>"+polygon.title.split('(')[0]+"</td>\
       <td>"+polygon.id+"</td>\
       <td>\
-        <a onclick='removeFromSelection("+polygon.i+")'><i style='color:#FFF;cursor:pointer' class='fa fa-trash'></i></a>\
+        <a onclick='removeFromSelection("+polygon.i+")'><i style='color:#FFF;cursor:pointer' class='far fa-trash-alt'></i></a>\
       </td>\
     </tr>\
     ";
@@ -203,14 +203,14 @@ $files =[];
  ?>
 <div class="text-right col-xs-12">
   <a href="/logout" style="margin-top:10px;margin-bottom:0px;color:#FFF;cursor:pointer;">
-    Logout <i class="fa fa-sign-out"></i>
+    Logout <i class="fa fa-sign-out-alt"></i>
   </a>
 </div>
 <div class="col-xs-12">
 
   <h2>KML Files
     @if( Auth::user()->isAdmin() )
-    <a data-toggle="modal" data-target="#uploadKML"><i style='color:#FFF' class='fa-fw fa fa-upload'></i></a>
+    <a data-toggle="modal" data-target="#uploadKML"><i style='color:#FFF' class='fa-fw fas fa-upload'></i></a>
     @endif
   </h2>
   <select class="kml-picker selectpicker" data-live-search="true" data-with='300px'>
@@ -231,8 +231,8 @@ $files =[];
     <h6>or</h6>
     <h6> Export Selection </h6>
       <select class="selectpicker export-format">
-        <option data-icon="fa fa-file-excel-o" value="table">Selection Table</option>
-        <option data-icon="fa fa-file-excel-o" value="tabledata">Selection + Data</option>
+        <option data-icon="far fa-file-excel" value="table">Selection Table</option>
+        <option data-icon="far fa-file-excel" value="tabledata">Selection + Data</option>
       </select>
       <a onclick="exportData()">
         <div style='margin-top: 5px;' class="btn btn-default">Export</div>

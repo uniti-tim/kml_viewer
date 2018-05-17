@@ -95,7 +95,7 @@
                                         <ul style="list-style:none">
                                           @foreach($attr as $key => $value)
                                           <?php  $value = is_array($value)? implode(",",$value):(string)$value; ?>
-                                            <li>
+                                            <li style="width:100%;word-break:break-word">
                                               <b>{{$key}}</b>: {{$value}}
                                             </li>
                                           @endforeach
@@ -133,7 +133,7 @@
                                                 {{ $model::friendly_attribute($key, 'name') }}
 
                                                 @if( !is_null( $model::friendly_attribute($key, 'helper_text') )  )
-                                                  <i class='fa-fw fa fa-info-circle'
+                                                  <i class='fa-fw fas fa-info-circle'
                                                   data-toggle="tooltip"
                                                   data-html="true"
                                                   title="{{ $model::friendly_attribute($key, 'helper_text') }}"
@@ -141,15 +141,87 @@
                                                 @endif
 
                                               </label>
+
                                               <div class="col-sm-6">
-                                                <input
-                                                data-edit-attr
-                                                data-name='{{$key}}'
-                                                type="text"
-                                                class="form-control"
-                                                value={{$value}}
-                                                 placeholder="{{$model::friendly_attribute($key, 'name')}} value" />
+                                                @if( $mod_attr[$key] === 'json')
+
+                                                  <div class="btn btn-default"  data-toggle="modal" data-target="#{{$record[0]}}_{{$key}}">
+                                                    Configure {{$model::friendly_attribute($key, 'name')}}
+                                                  </div>
+                                                  <input type='hidden'
+                                                  data-edit-attr
+                                                  data-name='{{$key}}'
+                                                  data-json-record-name ='{{$record[0]}}_{{$key}}'
+                                                  value='{{$value}}'
+                                                  />
+
+
+                                                  <!-- MODAL FOR JSON INPUTS  -->
+                                                  <div class="modal fade" style="margin-top:5%" id="{{$record[0]}}_{{$key}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                      <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <h3 class="modal-title text-center">Update Fields for {{$model::friendly_attribute($key, 'name')}}</h3>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                          <div class="form-group row">
+
+                                                            <?php
+                                                            $decoded_data = json_decode($value);
+                                                            $data_model = $model::friendly_attribute($key,'model'); //gets model for JSON type field
+                                                            ?>
+                                                            <!-- Iterate over data in JSON object and display it -->
+                                                            @foreach($decoded_data as $_key => $_value)
+                                                              <?php $model_item = $data_model::find($_key);
+                                                              //check if record even exists; if so find the name.
+                                                              if( is_null($model_item) ){
+                                                                continue;
+                                                              }
+                                                              ?>
+                                                            <div class="col-sm-12">
+                                                              <label class="col-xs-6 text-right" style="line-height: 32px;font-size: 15px;">
+                                                                {{$model_item->name}}
+                                                              </label>
+
+                                                              <div class="col-xs-6">
+                                                                  <input
+                                                                  data-edit-attr='{{$record[0]}}_{{$key}}'
+                                                                  data-name='{{$_key}}'
+                                                                  type="text"
+                                                                  class="form-control"
+                                                                  value={{$_value}}
+                                                                  placeholder="value" />
+                                                              </div>
+                                                            </div>
+                                                            @endforeach
+
+                                                          </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                          <button type="button" class="btn btn-secondary" onclick="$('#{{$record[0]}}_{{$key}}').modal('hide')" >Dismiss</button>
+                                                          <button type="button" class="btn btn-success"
+                                                          data-edit-json="{{$record[0]}}_{{$key}}"
+                                                          >Done</button>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <!--END MODAL FOR JSON INPUTS  -->
+
+
+                                                @else
+                                                  <input
+                                                  data-edit-attr
+                                                  data-name='{{$key}}'
+                                                  type="text"
+                                                  class="form-control"
+                                                  value={{$value}}
+                                                  placeholder="{{$model::friendly_attribute($key, 'name')}} value" />
+                                                @endif
                                               </div>
+
+
+
                                             </div>
                                           @endforeach
                                         </ul>
@@ -197,36 +269,108 @@
               <ul style="list-style:none">
                 @foreach($mod_attr as $key => $value)
                 <div class="form-group row">
+
                   <label class="col-sm-4 text-right" style="line-height: 32px;font-size: 15px;">
                     {{ $model::friendly_attribute($key, 'name') }}
-
                     @if( !is_null( $model::friendly_attribute($key, 'helper_text') )  )
-                      <i class='fa-fw fa fa-info-circle'
+                      <i class='fa-fw fas fa-info-circle'
                       data-toggle="tooltip"
                       data-html="true"
                       title="{{ $model::friendly_attribute($key, 'helper_text') }}"
                       ></i>
                     @endif
-                    
                   </label>
+
                   <div class="col-sm-6">
-                    <input
-                    data-name='{{$key}}'
-                    type="text"
-                    class="form-control"
-                    <?php switch ($value) {
-                           case 'float':
-                            $ex = "1.35";
-                            break;
-                           case 'string':
-                            $ex = "text here";
-                            break;
-                           case 'integer':
-                            $ex = "2";
-                            break;
-                    }?>
-                     placeholder="This should be a {{$value}} eg: {{$ex}}" />
+                    @if( $mod_attr[$key] === 'json')
+
+                      <div class="btn btn-default"  data-toggle="modal" data-target="#bulk_{{$key}}">
+                        Configure {{$model::friendly_attribute($key, 'name')}}
+                      </div>
+                      <input type='hidden'
+                      data-edit-attr
+                      data-name='{{$key}}'
+                      data-json-record-name-bulk ='bulk_{{$key}}'
+                      />
+
+
+                      <!-- MODAL FOR JSON INPUTS  -->
+                      <div class="modal fade" style="margin-top:5%" id="bulk_{{$key}}" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h3 class="modal-title text-center">Update Fields for {{$model::friendly_attribute($key, 'name')}}</h3>
+                            </div>
+                            <div class="modal-body">
+                              <div class="form-group row">
+
+                                <?php
+                                $data_model = $model::friendly_attribute($key,'model'); //gets model for JSON type field
+                                //Since we dont have any data to map on for builk edits we have to first grab
+                                //an example of what a this json object looks like. To do this we use the base model eg. County
+                                //and decode its data column AND decode the json field we are looking for ($key). Now we have
+                                //a template we can use to apply bulk edits.
+                                $decoded_data = json_decode(json_decode($model::first()->data)->$key)
+                                ?>
+                                <!-- Iterate over data in JSON object and display it -->
+                                @foreach($decoded_data as $_key => $_value)
+                                  <?php $model_item = $data_model::find($_key);
+                                  //check if record even exists for JSON object; if so find the name.
+                                  if( is_null($model_item) ){
+                                    continue;
+                                  }
+                                  ?>
+                                <div class="col-sm-12">
+                                  <label class="col-xs-6 text-right" style="line-height: 32px;font-size: 15px;">
+                                    {{$model_item->name}}
+                                  </label>
+
+                                  <div class="col-xs-6">
+                                      <input
+                                      data-edit-attr='bulk_{{$key}}'
+                                      data-name='{{$_key}}'
+                                      type="text"
+                                      class="form-control"
+                                      value="0"
+                                      placeholder="value" />
+                                  </div>
+                                </div>
+                                @endforeach
+
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" onclick="$('#bulk_{{$key}}').modal('hide')" >Dismiss</button>
+                              <button type="button" class="btn btn-success"
+                              data-edit-json-bulk="bulk_{{$key}}"
+                              >Done</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!--END MODAL FOR JSON INPUTS  -->
+
+
+                    @else
+                      <input
+                      data-name='{{$key}}'
+                      type="text"
+                      class="form-control"
+                      <?php switch ($value) {
+                             case 'float':
+                              $ex = "1.35";
+                              break;
+                             case 'string':
+                              $ex = "text here";
+                              break;
+                             case 'integer':
+                              $ex = "2";
+                              break;
+                      }?>
+                       placeholder="This should be a {{$value}} eg: {{$ex}}" />
+                    @endif
                   </div>
+
                 </div>
                 @endforeach
               </ul>
