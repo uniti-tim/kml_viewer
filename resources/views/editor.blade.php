@@ -94,7 +94,11 @@
                                         <?php $attr = json_decode($model::where('uid',$record[0])->get()[0]->data); ?>
                                         <ul style="list-style:none">
                                           @foreach($attr as $key => $value)
-                                          <?php  $value = is_array($value)? implode(",",$value):(string)$value; ?>
+                                          <?php
+                                          $modifiable_attributes = $model::mod_attributes();
+                                          if( !in_array($key, array_keys($modifiable_attributes)) ){continue;}
+                                          $value = is_array($value)? implode(",",$value):(string)$value;
+                                          ?>
                                             <li style="width:100%;word-break:break-word">
                                               <b>{{$key}}</b>: {{$value}}
                                             </li>
