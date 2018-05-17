@@ -62,6 +62,9 @@ class EditorController extends Controller
           case 'string':
             return (string)$value;
             break;
+          default:
+            return (string)$value;
+            break;
         }
     }
 
