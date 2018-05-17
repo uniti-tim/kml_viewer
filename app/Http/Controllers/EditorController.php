@@ -47,7 +47,7 @@ class EditorController extends Controller
         $record->update(['data' => json_encode($record_data)]);
       }
 
-      Session::flash('success',"All ".$request->input('model')." in selection were updated.");
+      Session::flash('success',"All ".str_plural($request->input('model'))." in selection were updated.");
       return json_encode("Success");
     }
 
