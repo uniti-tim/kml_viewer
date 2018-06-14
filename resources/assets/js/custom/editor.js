@@ -12,10 +12,6 @@ $(function(){if(Window.Page === 'editor'){
     modifyJSON($(e.target), $(e.target).data('edit-json') );
   })
 
-  $('[data-edit-json]').click(function(e){
-    modifyJSON($(e.target), $(e.target).data('edit-json') );
-  })
-
   $('[data-edit-json-bulk]').click(function(e){
     bulkModifyJSON($(e.target), $(e.target).data('edit-json-bulk') );
   })
@@ -80,6 +76,8 @@ function modifyJSON(target, modalName){
     let value = +$(el).val();
     data[inputKey] = value;
   });
+
+  debugger;
 
   //Stringify data object and replace the hidden field that gets submitted with the form.
   //and close the overlay modal.
