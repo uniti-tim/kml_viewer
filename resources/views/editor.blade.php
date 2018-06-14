@@ -53,7 +53,7 @@
                       </div> -->
                       <!-- Grid column -->
                       <div class="col-xs-4">
-                        <div style="margin:5px 10px 0px 10px" class="btn btn-default col-xs-12" data-toggle='modal' data-target='#bulkUpdateModal'>Bulk Update Selection </div>
+                        <div style="margin:5px 10px 0px 10px" class="btn btn-default col-xs-12" data-toggle='modal' data-target='#bulkUpdateModal'>Update All Selected Records </div>
                         <!-- <div style="margin:5px 10px 0px 10px" class="btn btn-default col-xs-12">Add new fields to selection</div> -->
                       </div>
 
@@ -150,7 +150,7 @@
                                                 @if( $mod_attr[$key] === 'json')
 
                                                   <div class="btn btn-default"  data-toggle="modal" data-target="#{{$record[0]}}_{{$key}}">
-                                                    Configure {{$model::friendly_attribute($key, 'name')}}
+                                                    Enabled/Disable {{$model::friendly_attribute($key, 'name')}}
                                                   </div>
                                                   <input type='hidden'
                                                   data-edit-attr
@@ -188,13 +188,16 @@
                                                               </label>
 
                                                               <div class="col-xs-6">
-                                                                  <input
+                                                                  <select
                                                                   data-edit-attr='{{$record[0]}}_{{$key}}'
                                                                   data-name='{{$_key}}'
-                                                                  type="text"
                                                                   class="form-control"
                                                                   value={{$_value}}
-                                                                  placeholder="value" />
+                                                                  placeholder="value"
+                                                                  >
+                                                                    <option {{$_value? "selected":''}} value="1">Enabled</option>
+                                                                    <option {{!$_value? "selected":''}} value="0">Disabled</option>
+                                                                  </select>
                                                               </div>
                                                             </div>
                                                             @endforeach
@@ -219,8 +222,12 @@
                                                   data-name='{{$key}}'
                                                   type="text"
                                                   class="form-control"
-                                                  value={{$value}}
-                                                  placeholder="{{$model::friendly_attribute($key, 'name')}} value" />
+                                                  @if( $value ==0 )
+                                                    value=""
+                                                  @else
+                                                    value="{{$value}}"
+                                                  @endif
+                                                    placeholder="Use Company Default" />
                                                 @endif
                                               </div>
 
