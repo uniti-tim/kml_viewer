@@ -77,8 +77,6 @@ function modifyJSON(target, modalName){
     data[inputKey] = value;
   });
 
-  debugger;
-
   //Stringify data object and replace the hidden field that gets submitted with the form.
   //and close the overlay modal.
   $(`[data-json-record-name="${modalName}"]`).val( JSON.stringify(data) );
