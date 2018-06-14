@@ -337,13 +337,15 @@
                                   </label>
 
                                   <div class="col-xs-6">
-                                      <input
-                                      data-edit-attr='bulk_{{$key}}'
-                                      data-name='{{$_key}}'
-                                      type="text"
-                                      class="form-control"
-                                      value="0"
-                                      placeholder="value" />
+                                    <select
+                                    data-edit-attr='bulk_{{$key}}'
+                                    data-name='{{$_key}}'
+                                    class="form-control"
+                                    value="0"
+                                    >
+                                      <option value="1">Enabled</option>
+                                      <option selected value="0">Disabled</option>
+                                    </select>
                                   </div>
                                 </div>
                                 @endforeach
